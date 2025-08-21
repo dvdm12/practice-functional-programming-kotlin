@@ -1,14 +1,19 @@
-# Archivos de Gradle generados
+# === Ignore Gradle wrapper & caches ===
 .gradle/
+gradlew
+gradlew.bat
+gradle/
 
-# Archivos temporales de sistema
-*.log
-*.tmp
-*.swp
-*.DS_Store
-Thumbs.db
+# === Ignore build outputs (except app/) ===
+build/
+!app/**/        # do not ignore anything inside app/
 
-# Configuración de IDEs
+# === Ignore JARs ===
+*.jar
+
+# === IDE files (optional, but recommended) ===
 .idea/
 *.iml
-.vscode/
+*.ipr
+*.iws
+out/
