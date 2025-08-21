@@ -18,29 +18,6 @@ To run the JAR from the project root:
     java -jar app.jar
 
 ------------------------------------------------------------
-📂 Project Structure
-------------------------------------------------------------
-.
-├── app/                       
-│   ├── build.gradle.kts
-│   └── src/
-│       └── main/
-│           └── kotlin/
-│               └── org/example/
-│                   ├── App.kt              # Entry point with interactive menu
-│                   └── exercises/          # Exercise 1 — FP pillars
-│                       ├── ImmutabilityExamples.kt
-│                       ├── PureFunctions.kt
-│                       ├── LambdaExamples.kt
-│                       ├── HigherOrderExamples.kt
-│                       └── LazyExamples.kt
-│       └── test/
-│ 
-├── settings.gradle.kts
-├── app.jar                  # Runnable JAR (compiled app)
-└── README.md                # Project documentation
-
-------------------------------------------------------------
 🧩 Exercise 1 — Functional Programming Pillars
 ------------------------------------------------------------
 1. Immutability
