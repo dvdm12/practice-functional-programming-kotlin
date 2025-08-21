@@ -1,17 +1,17 @@
-# === Ignore Gradle wrapper & caches ===
+# === Gradle wrapper & caches ===
 .gradle/
 gradlew
 gradlew.bat
 gradle/
 
-# === Ignore build outputs (except app/) ===
+# === Build outputs ===
 build/
-!app/**/        # do not ignore anything inside app/
+app/build/
 
-# === Ignore JARs ===
-*.jar
+# === Gradle config (you don't want it visible) ===
+gradle.properties
 
-# === IDE files (optional, but recommended) ===
+# === IDE/Editor junk (optional, recommended) ===
 .idea/
 *.iml
 *.ipr
