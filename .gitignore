@@ -1,0 +1,14 @@
+# Archivos de Gradle generados
+.gradle/
+
+# Archivos temporales de sistema
+*.log
+*.tmp
+*.swp
+*.DS_Store
+Thumbs.db
+
+# Configuración de IDEs
+.idea/
+*.iml
+.vscode/
