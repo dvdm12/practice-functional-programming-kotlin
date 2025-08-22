@@ -1,52 +1,76 @@
+package org.example
+
+import java.util.Scanner
 import repository.UserRepo
-import model.User
+import service.UserService
 
+/**
+ * Console interactive application to demonstrate UserService
+ * with scope functions (apply, let, also, with, run).
+ */
+fun main() {
+    val scanner = Scanner(System.`in`)
+    val service = UserService(UserRepo())
 
-// Demonstration of all five scope functions in a coherent flow
-fun scopeFunctionsUserManagementDemo() {
-    val repo = UserRepo()
+    // Seed initial users (admin and editor)
+    service.seedInitialUsers()
 
-    // RUN: initialization block that returns a computed value
-    val admin = run {
-        val base = User(name = "Ana", email = "ana@acme.io")
-        base.roles += "ADMIN"
-        base // last expression is the return value of run
-    }
+    while (true) {
+        println(
+            """
+            
+            === User Management Console ===
+            1) Create user
+            2) List active users
+            3) Deactivate user by ID
+            4) Show summary
+            0) Exit
+            -------------------------------
+            Choose an option: 
+            """.trimIndent()
+        )
 
-    repo.create(admin)                    // apply + also are used inside create()
+        when (scanner.nextLine().trim()) {
+            "1" -> {
+                print("Name : ")
+                val name = scanner.nextLine().trim()
 
-    // APPLY: build and configure another user in a chain
-    val editor = User(name = "Ben", email = "ben")
-        .apply {
-            roles += "EDITOR"
+                print("Email: ")
+                val email = scanner.nextLine().trim()
+
+                print("Roles (comma separated, optional): ")
+                val roles = scanner.nextLine().trim().ifBlank { null }
+
+                val created = service.createUser(name, email, roles)
+                println("Created: id=${created.id}, name=${created.name}, roles=${created.roles.joinToString()}")
+            }
+
+            "2" -> {
+                val active = service.listActiveUsers()
+                // WITH: operate on the collection for pretty printing
+                with(active) {
+                    if (isEmpty()) println("No active users.")
+                    else {
+                        println("Active users ($size):")
+                        forEach { println(" - id=${it.id} :: ${it.name} [${it.roles.joinToString()}]") }
+                    }
+                }
+            }
+
+            "3" -> {
+                print("Enter ID to deactivate: ")
+                val ok = service.deactivateById(scanner.nextLine().trim())
+                println(if (ok) "User deactivated successfully." else "Deactivation failed (invalid or not found).")
+            }
+
+            "4" -> println(service.summary())
+
+            "0" -> {
+                println("Exiting... Goodbye!")
+                return
+            }
+
+            else -> println("Invalid option, please try again.")
         }
-    repo.create(editor)
-
-    // WITH: operate on a collection without chaining
-    val activeUsers = repo.listActive()
-    with(activeUsers) {                   // WITH: receiver is "activeUsers"
-        println("Active users: $size")
-        forEach { println(" - ${it.name} [${it.roles.joinToString()}]") }
     }
-
-    // ALSO: side-effect logging without breaking the chain
-    val anaId = repo.listActive()
-        .first { it.name == "Ana" }
-        .also { println("[LOG] About to deactivate: ${it.name}") }
-        .id!!
-
-    // LET: handle nullable safely and transform to another type
-    val ok = anaId.let { repo.deactivate(it) }
-    println("Ana deactivation successful: $ok")
-
-    // RUN: final summary in an isolated scope
-    val summary = run {
-        val remaining = repo.listActive()
-        val names = remaining.joinToString { it.name }
-        "Summary → active=${remaining.size} :: [$names]"
-    }
-    println(summary)
 }
-
-// If you want to test directly
-fun main() = scopeFunctionsUserManagementDemo()
