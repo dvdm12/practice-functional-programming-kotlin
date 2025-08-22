@@ -11,7 +11,7 @@ class UserRepo {
     fun create(u: User): User =
         u.apply {                         
             id = seq++
-            if ("@" !in email) email = "$email@example.com"
+            if ("@" !in email) email = "$email@user.com"
             roles += "USER"
         }.also { created ->               
             println("[LOG] Creating user: ${created.name} -> id=${created.id}")
