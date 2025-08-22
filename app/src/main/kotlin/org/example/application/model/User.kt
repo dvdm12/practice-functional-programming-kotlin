@@ -1,4 +1,4 @@
-package org.example.exercises
+package model
 
 // Basic user model
 data class User(
@@ -8,3 +8,5 @@ data class User(
     var active: Boolean = true,
     val roles: MutableList<String> = mutableListOf()
 )
+
+
